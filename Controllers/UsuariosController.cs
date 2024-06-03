@@ -38,7 +38,7 @@ namespace ApiUsuarios.Controllers
             
             if(usuario == null)
             {
-                return NotFound();
+                return NotFound("Não encontrado!");
             }
             return Ok(usuario);
         }
@@ -54,7 +54,7 @@ namespace ApiUsuarios.Controllers
            var novoUsuario = _db.Usuarios.Add(usuario);
            await _db.SaveChangesAsync();
 
-           return CreatedAtAction(nameof(GetUsuarios), new {id = usuario.Id}, usuario);
+                return CreatedAtAction(nameof(GetUsuarios), new {id = usuario.Id}, usuario );
         }
 
         public static bool ValidarEmail(string email)
@@ -67,16 +67,20 @@ namespace ApiUsuarios.Controllers
         [HttpPut("{id}")]
         public async Task <IActionResult> PutUsuarios(int id, Usuarios input)
         {
+            if (!ValidarEmail(input.Email))
+           {
+                return BadRequest("Email Inválido");
+           }
             var usuarioAtualizado = await _db.Usuarios.SingleOrDefaultAsync(u => u.Id == id);
             if(usuarioAtualizado == null)
             {
-                return NotFound();
+                return NotFound("Não encontrado");
             }
 
             usuarioAtualizado.Update(input.Nome, input.Sobrenome, input.Email, input.DataNascimento, input.Escolaridade_Id);
             _db.Usuarios.Update(usuarioAtualizado);
             await _db.SaveChangesAsync();
-            return Ok();
+            return Ok("Usuário atualizado com sucesso!");
             
         }
         
@@ -91,7 +95,7 @@ namespace ApiUsuarios.Controllers
             }
             _db.Usuarios.Remove(usuario);
             _db.SaveChanges();
-            return Ok();
+            return Ok("Usuário deletado com sucesso!");
         }
 
     }
