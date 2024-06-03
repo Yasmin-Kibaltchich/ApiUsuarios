@@ -22,6 +22,7 @@ namespace ApiUsuarios.Models
     {   
         Regex regex = new Regex(@"^[a-z0-9.+_-]+@[a-z0-9.-]+\.[a-z]{2,3}$");
         return regex.IsMatch(email);
+       
     }
     }
         public void Update(string nome, string sobrenome, string email, DateTime datanascimento, int escolaridade_id)

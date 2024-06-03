@@ -7,7 +7,7 @@ using ApiUsuarios.Models;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-
+using System.Text.RegularExpressions;
 
 namespace ApiUsuarios.Controllers
 
@@ -46,13 +46,23 @@ namespace ApiUsuarios.Controllers
         [HttpPost]
         public async Task<IActionResult> PostUsuarios(Usuarios usuario)
         {
-             
+           if (!ValidarEmail(usuario.Email))
+           {
+                return BadRequest("Email Inválido");
+           }
+           
            var novoUsuario = _db.Usuarios.Add(usuario);
            await _db.SaveChangesAsync();
 
            return CreatedAtAction(nameof(GetUsuarios), new {id = usuario.Id}, usuario);
-        }  
-        
+        }
+
+        public static bool ValidarEmail(string email)
+        {
+            Regex regex = new Regex(@"^(([\w\-\.]+)@(\w+)(\.[a-z]{2,}){1,})|((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])@(\w+)(\.[a-z]{2,}){1,})");
+            return regex.IsMatch(email);
+        }
+
 
         [HttpPut("{id}")]
         public async Task <IActionResult> PutUsuarios(int id, Usuarios input)
