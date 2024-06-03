@@ -8,6 +8,8 @@ using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Text.RegularExpressions;
+using Microsoft.VisualBasic;
+using System.Security.Cryptography.X509Certificates;
 
 namespace ApiUsuarios.Controllers
 
@@ -17,12 +19,20 @@ namespace ApiUsuarios.Controllers
     public class UsuariosController : ControllerBase
     {
         private readonly UsuariosDbContext _db;
+        private static readonly List<Escolaridade > EscolaridadesValidas = new List<Escolaridade>
+        {
+            new Escolaridade { Id = 1, Descricao = "Infantil" },
+            new Escolaridade { Id = 2, Descricao = "Fundamental" },
+            new Escolaridade { Id = 3, Descricao = "Médio" },
+            new Escolaridade { Id = 4, Descricao = "Superior" }
+        };
 
         public UsuariosController(UsuariosDbContext db)
         {
             _db = db;
         }
 
+      
         [HttpGet]
         public IActionResult GetLista()
         {
@@ -46,10 +56,22 @@ namespace ApiUsuarios.Controllers
         [HttpPost]
         public async Task<IActionResult> PostUsuarios(Usuarios usuario)
         {
+           
            if (!ValidarEmail(usuario.Email))
            {
                 return BadRequest("Email Inválido");
            }
+
+           if (!EscolaridadesValidas.Any(e => e.Descricao == usuario.Escolaridade))
+           {
+                return BadRequest("Escolaridade inválida! Use 1 para nível infantil, 2 para nível fundamental, 3 para nível médio e 4 para nível superior");
+           }
+
+           
+           if(usuario.DataNascimento > DateTime.Now)
+           {
+                return BadRequest("Data de nascimento não pode ser maior do que a data atual");
+           }  
            
            var novoUsuario = _db.Usuarios.Add(usuario);
            await _db.SaveChangesAsync();
@@ -57,13 +79,14 @@ namespace ApiUsuarios.Controllers
                 return CreatedAtAction(nameof(GetUsuarios), new {id = usuario.Id}, usuario );
         }
 
+
         public static bool ValidarEmail(string email)
         {
             Regex regex = new Regex(@"^(([\w\-\.]+)@(\w+)(\.[a-z]{2,}){1,})|((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])@(\w+)(\.[a-z]{2,}){1,})");
             return regex.IsMatch(email);
         }
 
-
+    
         [HttpPut("{id}")]
         public async Task <IActionResult> PutUsuarios(int id, Usuarios input)
         {

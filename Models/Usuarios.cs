@@ -15,6 +15,11 @@ namespace ApiUsuarios.Models
         public DateTime DataNascimento {get; set;}
         public int Escolaridade_Id {get; set;}
         public int HistoricoEscolar_Id {get; set;}
+        public string Escolaridade {get; set;}
+
+    // Services/UsuarioService.cs
+
+
 
     public class ValidadorEmail
     {
@@ -25,7 +30,7 @@ namespace ApiUsuarios.Models
        
     }
     }
-        public void Update(string nome, string sobrenome, string email, DateTime datanascimento, int escolaridade_id)
+    public void Update(string nome, string sobrenome, string email, DateTime datanascimento, int escolaridade_id)
 
     {
         Nome = nome;
@@ -42,14 +47,8 @@ namespace ApiUsuarios.Models
     {
         public int Id {get; set;}
         public string Descricao {get; set;}
-
-        
-        
-        public void Update(string descricao)
-        {
-             Descricao = descricao;
-        }
-    }
     
+
+    }  
 
 }
