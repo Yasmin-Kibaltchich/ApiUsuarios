@@ -8,5 +8,9 @@ namespace ApiUsuarios.Data
         public UsuariosDbContext(DbContextOptions<UsuariosDbContext> options) : base(options) {}
 
         public DbSet<Usuarios> Usuarios { get; set; }        
+        public DbSet<Escolaridade> Escolaridade { get; set; }
     }
-}
+    
+    
+}   
+
