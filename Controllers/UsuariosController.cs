@@ -59,12 +59,12 @@ namespace ApiUsuarios.Controllers
            
            if (!ValidarEmail(usuario.Email))
            {
-                return BadRequest("Email Inválido");
+                return BadRequest("Email Inválido! Modelo: exemplo@exemplo.com");
            }
 
            if (!EscolaridadesValidas.Any(e => e.Descricao == usuario.Escolaridade))
            {
-                return BadRequest("Escolaridade inválida! Use 1 para nível infantil, 2 para nível fundamental, 3 para nível médio e 4 para nível superior");
+                return BadRequest("Escolaridade inválida! Use 1 para nível infantil, 2 para nível fundamental, 3 para nível médio e 4 para nível superior, e escreva os nomes correspondentes a cada numeração dentro do campo escolaridade");
            }
 
            
@@ -100,7 +100,7 @@ namespace ApiUsuarios.Controllers
                 return NotFound("Não encontrado");
             }
 
-            usuarioAtualizado.Update(input.Nome, input.Sobrenome, input.Email, input.DataNascimento, input.Escolaridade_Id);
+            usuarioAtualizado.Update(input.Nome, input.Sobrenome, input.Email, input.DataNascimento, input.Escolaridade_Id, input.Escolaridade);
             _db.Usuarios.Update(usuarioAtualizado);
             await _db.SaveChangesAsync();
             return Ok("Usuário atualizado com sucesso!");

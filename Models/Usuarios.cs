@@ -30,7 +30,7 @@ namespace ApiUsuarios.Models
        
     }
     }
-    public void Update(string nome, string sobrenome, string email, DateTime datanascimento, int escolaridade_id)
+    internal void Update(string nome, string sobrenome, string email, DateTime datanascimento, int escolaridade_id, string escolaridade)
 
     {
         Nome = nome;
@@ -38,9 +38,9 @@ namespace ApiUsuarios.Models
         Email = email;
         DataNascimento = datanascimento;
         Escolaridade_Id = escolaridade_id;
+        Escolaridade = escolaridade;
     }
-        
-    
+
     }
 
     public class Escolaridade 
