@@ -1,0 +1,38 @@
+@page
+@model IndexModel
+@{
+    ViewData["Title"] = "User Management";
+}
+
+<h1>User Management</h1>
+
+<form id="userForm" onsubmit="saveUser(event)">
+    <input type="hidden" id="userId">
+    <input type="text" id="nome" placeholder="Nome" required>
+    <input type="text" id="sobrenome" placeholder="Sobrenome" required>
+    <input type="email" id="email" placeholder="Email" required>
+    <input type="date" id="dataNascimento" placeholder="Data de Nascimento" required>
+    <input type="number" id="escolaridadeId" placeholder="Escolaridade Id" required>
+    <input type="number" id="historicoEscolarId" placeholder="Histórico Escolar Id" required>
+    <button type="submit">Save</button>
+    <button type="button" id="cancelEdit" onclick="cancelEdit()">Cancel</button>
+</form>
+
+<table>
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nome</th>
+            <th>Sobrenome</th>
+            <th>Email</th>
+            <th>Data de Nascimento</th>
+            <th>Escolaridade Id</th>
+            <th>Histórico Escolar Id</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody id="userTableBody">
+    </tbody>
+</table>
+
+
